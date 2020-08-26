@@ -13,9 +13,9 @@ frameCounter = 0
 myColors = [[100, 120, 118, 179, 255, 255], [63, 79, 109, 87, 255, 213]]
 
 myColorValues = [[255, 50, 25, 10],
-                 [75, 255, 25, 5]]  # bgr
+                 [75, 255, 25, 5]]
 
-myPoints = []  # [x, y, colorId]
+myPoints = []
 
 
 def drawOnCanvas(imgResults, myPoints, myColorValues):
@@ -30,7 +30,6 @@ def getContours(img):
         area = cv2.contourArea(cnt)
 
         if area > 250:
-            # cv2.drawContours(imgResults, cnt, -1, (255, 0, 0), 3)
             peri = cv2.arcLength(cnt, True)
             aprox = cv2.approxPolyDP(cnt, 0.02 * peri, True)
 
@@ -60,8 +59,8 @@ def selectColor(myColors):
     cv2.namedWindow("My colors")
     cv2.resizeWindow("My colors", 300, 100)
     cv2.createTrackbar("Color Num", "My colors", 0, int(len(myColors)) - 1, empty)
-    switch = 'Change Filter'
-    switch2 = 'Change Brush color'
+    switch = 'edit Filter'
+    switch2 = 'edit Brush'
     cv2.createTrackbar(switch, "My colors", 0, 1, empty)
     cv2.createTrackbar(switch2, "My colors", 0, 1, empty)
 
@@ -168,17 +167,20 @@ def colorFilter(color):
 
     cv2.destroyWindow("HSV")
     cv2.destroyWindow("Horizontal Stacking")
+
+
 def saveColors():
     pickle.dump([myColors, myColorValues], open("resources/colors.p", "wb"))
 
+
 def loadColors():
-    myColors[0:len(myColors)],myColorValues[0:len(myColorValues)] = pickle.load(open("resources/colors.p", "rb"))
+    myColors[0:len(myColors)], myColorValues[0:len(myColorValues)] = pickle.load(open("resources/colors.p", "rb"))
 
 
 def draw():
     loadColors()
 
-    switch = '1:Modify My colors'
+    switch = '1:edit\ncolors'
     while True:
 
         success, img = cap.read()
@@ -206,5 +208,6 @@ def draw():
             break
     cap.release()
     cv2.destroyAllWindows()
+
 
 draw()
